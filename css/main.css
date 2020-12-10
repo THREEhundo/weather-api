@@ -1,0 +1,90 @@
+* {
+  font-family: "Raleway", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: white;
+}
+
+span {
+  font-size: 0.2em;
+  align-self: flex-start;
+}
+
+input {
+  color: black;
+  height: 2.5em;
+  opacity: 0.65;
+  padding-left: 25px;
+  outline: none;
+}
+
+button {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 14%;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+img {
+  width: 25px;
+  height: 25px;
+  font-weight: bold;
+}
+
+#main-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+#weather-container {
+  display: flex;
+  flex-flow: row wrap;
+  width: 460px;
+  padding-top: 35vh;
+  padding-left: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+#description {
+  font-size: 1.5em;
+  margin-right: auto;
+}
+
+#location {
+  font-size: 2.5em;
+  border-bottom: 1px solid white;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+#temp {
+  display: flex;
+  font-size: 10em;
+  width: 180px;
+  margin-left: 5px;
+  margin-right: 15px;
+}
+
+#details-container {
+  padding-left: 25px;
+  margin-left: 30px;
+  border-left: 1px solid white;
+}
+
+#form-container {
+  float: right;
+  position: relative;
+  margin: 2.5rem 3.5rem 0 0;
+}
+
+#error-msg {
+  color: red;
+  display: block;
+  font-size: 1.15em;
+  text-align: center;
+  margin-top: 5px;
+}
