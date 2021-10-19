@@ -1,3 +1,5 @@
+import { locationPane } from './location-pane';
+
 async function cityWeather(city, f) {
   try {
     let weather;
@@ -21,6 +23,10 @@ async function cityWeather(city, f) {
       wind: data.wind.speed,
       sunrise: data.sys.sunrise,
       sunset: data.sys.sunset,
+      icon_id: data.weather[0].id,
+      icon_name: data.weather[0].icon,
+      locale_time: data.dt,
+      timezone: data.timezone
     });
   } catch (err) {
     removeError();
@@ -44,75 +50,106 @@ function removeError() {
   }
 }
 
-function cityName(city) {
+function callCity(city) {
   const weatherContainer = document.querySelector("#weather-container");
 
-  const description = document.createElement("div");
-  description.id = "description";
-  description.innerHTML = city.description.toUpperCase();
+  // const locationContainer = document.createElement("div");
+  // locationContainer.id = "location-container";
+  // locationContainer.className = "weather-item";
 
-  const location = document.createElement("div");
-  location.id = "location";
-  location.innerHTML = `${city.city.toUpperCase()}, ${city.country.toUpperCase()}`;
+  // const location = document.createElement("div");
+  // location.id = "location";
+  // location.innerHTML = `${city.city.toUpperCase()}, ${city.country.toUpperCase()}`;
+
+  // const description = document.createElement("div");
+  // description.id = "description";
+  // description.innerHTML = city.description.toUpperCase();
+
+  // const localeTime = document.createElement("div");
+  // localeTime.id = "locale-time";
+  // const timeConverter = new Date(city.locale_time * city.timezone);
+  // localeTime.innerHTML = `${timeConverter}`
 
   const temp = document.createElement("div");
-  temp.id = "temp";
-  temp.innerHTML = `${Math.round(city.temperature)}`;
+  temp.id = "temp-container";
+  temp.className = "weather-item";
+
+  const tempIcon = document.createElement("img");
+  tempIcon.id = "local-icon";
+  tempIcon.src = `https://openweathermap.org/img/wn/${city.icon_name}@2x.png`
+
+  const tempNumeric = document.createElement("span");
+  tempNumeric.id = "temp-numeric" ;
+  tempNumeric.innerHTML = `${Math.round(city.temperature)}`;
 
   const tempSymbol = document.createElement("span");
+  tempSymbol.id = "temp-unit";
   tempSymbol.innerHTML = "°F";
 
   const detailsContainer = document.createElement("div");
   detailsContainer.id = "details-container";
+  detailsContainer.className = "weather-item";
 
   const feelsLike = document.createElement("div");
   feelsLike.id = "feels-like";
+  feelsLike.className = "detail-item";
   feelsLike.innerHTML = `FEELS LIKE: ${Math.round(city.feels_like)}°F`;
 
   const humidity = document.createElement("div");
   humidity.id = "humidity";
+  humidity.className = "detail-item";
   humidity.innerHTML = `HUMIDITY: ${city.humidity}`;
+
+  const winDiv = document.createElement("div");
+  winDiv.innerHTML = `${Math.round(city.wind)} MPH`;
 
   const wind = document.createElement("div");
   wind.id = "wind";
-  wind.innerHTML = `WIND: ${Math.round(city.wind)} MPH`;
+  wind.className = "detail-item";
+  wind.innerHTML = `WIND: `;
 
   const maxTemp = document.createElement("div");
   maxTemp.id = "max-temp";
+  maxTemp.className = "detail-item";
   maxTemp.innerHTML = `MAX TEMP: ${Math.round(city.max_temp)}°F`;
 
   const minTemp = document.createElement("div");
   minTemp.id = "min-temp";
+  minTemp.className = "detail-item";
   minTemp.innerHTML = `MIN TEMP: ${Math.round(city.min_temp)}°F`;
 
   const sunRise = document.createElement("div");
   sunRise.id = "sun-rise";
+  sunRise.className = "detail-item";
   sunRise.innerHTML = `SUNRISE: ${riseSet(city.sunrise)}`;
 
   const sunSet = document.createElement("div");
   sunSet.id = "sun-set";
+  sunSet.className = "detail-item";
   sunSet.innerHTML = `SUNSET: ${riseSet(city.sunset)}`;
 
   if (riseSet(city.sunset) < Date.now()) {
     console.log(`${city.sunset} ${Date.now()}`);
     const main = document.querySelector("#main-container");
     main.style.backgroundImage = 'url("./css/imgs/stars.jpg")';
-    main.style.backgroundPosition = "center";
-    main.style.backgroundRepeat = "no-repeat";
   } else {
     const main = document.querySelector("#main-container");
     main.style.backgroundImage = 'url("./css/imgs/day.jpg")';
-    main.style.backgroundPosition = "center";
-    main.style.backgroundRepeat = "no-repeat";
   }
-  weatherContainer.appendChild(description);
-  weatherContainer.appendChild(location);
+  weatherContainer.appendChild(locationContainer);
+  locationPane(city);
+  // locationContainer.appendChild(location);
+  // locationContainer.appendChild(description);
+  // description.appendChild(localeTime);
   weatherContainer.appendChild(temp);
+  temp.appendChild(tempIcon)
+  temp.appendChild(tempNumeric);
   temp.appendChild(tempSymbol);
   weatherContainer.appendChild(detailsContainer);
   detailsContainer.appendChild(feelsLike);
   detailsContainer.appendChild(humidity);
   detailsContainer.appendChild(wind);
+  wind.appendChild(winDiv);
   detailsContainer.appendChild(maxTemp);
   detailsContainer.appendChild(minTemp);
   detailsContainer.appendChild(sunRise);
@@ -145,6 +182,7 @@ function createApp() {
 
   const img = document.createElement("img");
   img.src = "./css/imgs/search.png";
+  img.className = "bg";
 
   const search = document.createElement("input");
   search.id = "city-search";
@@ -171,7 +209,7 @@ function city(city, measurement) {
 
       removeAllChildNodes(weatherContainer);
 
-      cityName(weather);
+      callCity(weather);
 
       const name = document.querySelector("#city");
     })
@@ -211,8 +249,4 @@ form.addEventListener("submit", function (e) {
   e.preventDefault();
 
   const newCity = city(searchbox.value, "imperial");
-  console.log(city(searchbox.value, "imperial"));
-  // removeAllChildNodes(weatherContainer);
-
-  // }
 });

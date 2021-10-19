@@ -12,7 +12,11 @@ Simple web application that shows weather conditions for cities around the world
 - CSS
 - JavaScript
 - Openweathermap API
+- Weather Icons
 
 ## Features
 
 Day/Night background synced to current time.
+
+## Credit
+The icon designs are originally by [Lukas Bischoff](https://twitter.com/artill). Icon art HTML, Less, and CSS are by [Erika Bisch](https://www.helloerik.com/)
